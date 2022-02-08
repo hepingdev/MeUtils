@@ -1,24 +1,21 @@
-package com.bell.ai.framework.base.utils;
+package me.hp.meutils.utils;
 
 import android.os.Handler;
 import android.os.Looper;
 
 /**
- * Created by ApplePie on 2019/1/20.
+ * @author: HePing
+ * @created: 2019/1/20
+ * @desc: Handler主线程回调
  */
 public class MainHandler extends Handler {
 
-    private static MainHandler mainHandler;
-
     public static MainHandler getInstance() {
-        if (mainHandler == null) {
-            synchronized (MainHandler.class) {
-                if (mainHandler == null) {
-                    mainHandler = new MainHandler();
-                }
-            }
-        }
-        return mainHandler;
+        return SingletonHolder.instance;
+    }
+
+    private static class SingletonHolder {
+        private static final MainHandler instance = new MainHandler();
     }
 
     private MainHandler() {

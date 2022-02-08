@@ -1,4 +1,4 @@
-package me.hp.utils.demo;
+package me.hp.meutils.demo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
