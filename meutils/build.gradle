@@ -1,6 +1,5 @@
-plugins {
-    id 'com.android.library'
-}
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -11,12 +10,18 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
 
+        //会合并到app的混淆规则中，是给包括app在内的其他模块调用时使用的混淆规则
         consumerProguardFiles "consumer-rules.pro"
+    }
+
+    viewBinding {
+        enabled = true
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            //给Library模块自己使用的混淆规则
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -27,6 +32,24 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.1'
+    //android library
+    api "androidx.appcompat:appcompat:${rootProject.ext.appcompat}"
+    api "com.google.android.material:material:${rootProject.ext.material}"
+    api "androidx.recyclerview:recyclerview:${rootProject.ext.recyclerview}"
+    api "androidx.constraintlayout:constraintlayout:${rootProject.ext.constraintlayout}"
+    api "androidx.cardview:cardview:${rootProject.ext.cardview}"
+    api "androidx.viewpager2:viewpager2:${rootProject.ext.viewPager2}"
+
+    //kotlin
+    api "androidx.core:core-ktx:${rootProject.ext.kotlin_version}"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.ext.kotlin_version}"
+
+    //other library
+    api "com.github.bumptech.glide:glide:${rootProject.ext.glide}"
+    annotationProcessor "com.github.bumptech.glide:compiler:${rootProject.ext.glide}"
+    api "com.github.getActivity:XXPermissions:${rootProject.ext.permissions}"
+    api "com.github.getActivity:ToastUtils:${rootProject.ext.toast}"
+    api "com.github.getActivity:EasyHttp:${rootProject.ext.easyhttp}"
+    api "me.jessyan:autosize:${rootProject.ext.androidAutoSize}"
+    api "com.github.CymChad:BaseRecyclerViewAdapterHelper:${rootProject.ext.recyclerviewAdapterHelper}"
 }
