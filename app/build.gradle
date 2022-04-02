@@ -4,19 +4,17 @@ plugins {
 apply plugin: 'kotlin-android'
 
 android {
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding = true
     }
 
-    compileSdkVersion 31
-    buildToolsVersion "30.0.3"
-
+    compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "me.hp.utils.demo"
-        minSdkVersion 21
-        targetSdkVersion 31
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
     }
 
     buildTypes {
@@ -34,7 +32,4 @@ android {
 dependencies {
 //    implementation 'com.github.hepingdev:MeUtils:0.0.1-alpha'
     implementation project(path: ':meutils')
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.1'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }

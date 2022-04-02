@@ -16,9 +16,6 @@ import static android.content.Context.AUDIO_SERVICE;
  * @desc: 音量 / 屏幕 /
  */
 public class SystemUtils {
-
-
-
     /**
      * 系统页面
      */
@@ -222,4 +219,12 @@ public class SystemUtils {
         }
     }
 
+    /**
+     * 多媒体
+     */
+    public static class MediaUtils {
+        public static final String TAG = MediaUtils.class.getSimpleName();
+
+
+    }
 }

@@ -1,13 +1,10 @@
 package me.hp.meutils.utils;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
-
-import com.bell.ai.framework.base.config.StoragePathConfig;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -25,10 +22,13 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Enumeration;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import me.hp.meutils.extension.StringExtensionKt;
 
 /**
  * @author: HePing
@@ -38,15 +38,27 @@ import java.util.zip.ZipFile;
 public final class FileUtils {
     public static final String TAG = FileUtils.class.getSimpleName();
 
-    public static String saveTempBitmap(Bitmap bitmap, File file) throws IOException {
-        if (file.exists()) {
-            file.delete();
+    /**
+     * 将bitmap保存为文件
+     * 质量等级高
+     *
+     * @param bitmap
+     * @param savePath
+     * @return
+     * @throws IOException 如果抛出异常表示操作失败
+     */
+    public static File saveBitmap(Bitmap bitmap, String savePath) throws IOException {
+        if (StringExtensionKt.isEmpty(savePath)) throw new IOException("savePath is empty.");
+
+        File saveFile = new File(savePath);
+        if (saveFile != null && saveFile.exists()) {
+            saveFile.delete();
         }
         Bitmap.CompressFormat format = Bitmap.CompressFormat.JPEG;
         int quality = 100;
         OutputStream stream = null;
         try {
-            stream = new FileOutputStream(file);
+            stream = new FileOutputStream(saveFile);
             bitmap.compress(format, quality, stream);
             stream.flush();
         } finally {
@@ -54,16 +66,19 @@ public final class FileUtils {
                 stream.close();
             }
         }
-        return file.getAbsolutePath();
+        return saveFile;
     }
 
+    /**
+     * 复制文件
+     *
+     * @param src  原始文件
+     * @param dest 目标文件
+     * @throws IOException 如果抛出异常表示操作失败
+     */
     public static void copyFile(File src, File dest) throws IOException {
-        copyFile(new FileInputStream(src), dest);
-    }
-
-    public static void copyFile(InputStream is, File dest) throws IOException {
-        if (is == null) {
-            return;
+        if (src == null || dest == null) {
+            throw new IOException("src or dest is null!");
         }
         if (dest.exists()) {
             dest.delete();
@@ -71,7 +86,7 @@ public final class FileUtils {
         BufferedInputStream bis = null;
         BufferedOutputStream bos = null;
         try {
-            bis = new BufferedInputStream(is);
+            bis = new BufferedInputStream(new FileInputStream(src));
             bos = new BufferedOutputStream(new FileOutputStream(dest));
             byte[] bytes = new byte[1024 * 10];
             int length;
@@ -102,9 +117,9 @@ public final class FileUtils {
      * 计算文件的 MD5
      *
      * @param file
-     * @return
+     * @throws Exception 如果抛出异常表示操作失败
      */
-    public static String getMd5ByFile(File file) throws Exception {
+    public static String getFileMD5(File file) throws Exception {
         FileInputStream in = null;
         try {
             in = new FileInputStream(file);
@@ -120,74 +135,78 @@ public final class FileUtils {
         }
     }
 
-
+    /**
+     * 解压文件
+     *
+     * @param fileName
+     * @param outPath
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static void unZipFile(String fileName, String outPath) {
+    public static void unZipFile(String fileName, String outPath) throws IOException {
         //解压文件
-        try {
-            ZipFile zipFile = new ZipFile(fileName, Charset.forName("GBK"));
-            InputStream is = null;
-            Enumeration e = zipFile.entries();
-            ZipEntry entry = null;
-            File dstFile = null;
-            FileOutputStream fos = null;
-            int count = 0;
-            byte[] buffer = new byte[8192];
-            while (e.hasMoreElements()) {
-                entry = (ZipEntry) e.nextElement();
-                //如果是文件夹则不处理
-                if (entry.isDirectory()) {
-                    continue;
-                }
-                //通过文件名解析出文件夹
-                String[] subDirs = entry.getName().split("/");
-                String dirName = outPath;
-                String dstFileName = "";
-                for (int i = 0; i < subDirs.length; i++) {
-                    String dir = subDirs[i];
+        ZipFile zipFile = new ZipFile(fileName, Charset.forName("GBK"));
+        InputStream is = null;
+        Enumeration e = zipFile.entries();
+        ZipEntry entry = null;
+        File dstFile = null;
+        FileOutputStream fos = null;
+        int count = 0;
+        byte[] buffer = new byte[8192];
+        while (e.hasMoreElements()) {
+            entry = (ZipEntry) e.nextElement();
+            //如果是文件夹则不处理
+            if (entry.isDirectory()) {
+                continue;
+            }
+            //通过文件名解析出文件夹
+            String[] subDirs = entry.getName().split("/");
+            String dirName = outPath;
+            String dstFileName = "";
+            for (int i = 0; i < subDirs.length; i++) {
+                String dir = subDirs[i];
 
-                    //最外层的文件夹  删除空格
-                    if (0 == i) {
-                        dir = dir.replaceAll(" ", "");
-                    }
-
-                    if (subDirs.length - 1 == i) {
-                        dstFileName = dir;
-                    } else {
-                        dirName += dir + "/";
-                    }
-                }
-                File dir = new File(dirName);
-                if (!dir.exists()) {
-                    Log.d(TAG, "unzip path:" + dir.getAbsolutePath());
-                    dir.mkdirs();
+                //最外层的文件夹  删除空格
+                if (0 == i) {
+                    dir = dir.replaceAll(" ", "");
                 }
 
-                is = zipFile.getInputStream(entry);
-                dstFile = new File(dirName + dstFileName);
+                if (subDirs.length - 1 == i) {
+                    dstFileName = dir;
+                } else {
+                    dirName += dir + "/";
+                }
+            }
+            File dir = new File(dirName);
+            if (!dir.exists()) {
+                Log.d(TAG, "unzip path:" + dir.getAbsolutePath());
+                dir.mkdirs();
+            }
+
+            is = zipFile.getInputStream(entry);
+            dstFile = new File(dirName + dstFileName);
 //                dstFile.deleteOnExit();
-                fos = new FileOutputStream(dstFile);
-                while ((count = is.read(buffer, 0, buffer.length)) != -1) {
-                    fos.write(buffer, 0, count);
-                }
-                fos.flush();
-                fos.close();
+            fos = new FileOutputStream(dstFile);
+            while ((count = is.read(buffer, 0, buffer.length)) != -1) {
+                fos.write(buffer, 0, count);
             }
-            zipFile.close();
-            //解压完删除压缩文件
-            File deleteFile = new File(fileName);
-            if (deleteFile.exists()) {
-                deleteFile.delete();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+            fos.flush();
+            fos.close();
         }
+        zipFile.close();
+        //解压完删除压缩文件
+        delFileOrFolder(fileName);
     }
 
-
-    public static void write2File(String filePath, String FileName, String value) {
+    /**
+     * 将字符串数据写入文件
+     *
+     * @param filePath
+     * @param FileName
+     * @param value
+     */
+    public static void write2File(String filePath, String FileName, String value) throws IOException {
         if (value.length() < 1) {
-            return;
+            throw new IOException("value length < 1!!!");
         }
         File dir = new File(filePath);
         if (!dir.exists()) {
@@ -206,19 +225,29 @@ public final class FileUtils {
             fos = new FileOutputStream(h5ConfigFile);
             bos = new OutputStreamWriter(fos, "utf-8");
             bos.write(value);
-            bos.close();
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            bos.flush();
+        } finally {
+            if (bos != null) {
+                bos.close();
+            }
+            if (fos != null) {
+                fos.close();
+            }
         }
-        return;
     }
 
-
-    public static void appendFile(String filePath, String FileName, String value) {
+    /**
+     * 在指定文件中追加数据
+     *
+     * @param filePath
+     * @param FileName
+     * @param value
+     */
+    public static void appendFile(String filePath, String FileName, String value) throws IOException {
         if (value.length() < 1) {
-            return;
+            throw new IOException("value length < 1!!!");
         }
+
         File dir = new File(filePath);
         if (!dir.exists()) {
             dir.mkdirs();
@@ -229,20 +258,30 @@ public final class FileUtils {
         FileOutputStream fos = null;
         OutputStreamWriter bos = null;
         try {
+            //文件不存在就直接新建
             if (!h5ConfigFile.exists()) {
                 h5ConfigFile.createNewFile();
             }
             fos = new FileOutputStream(h5ConfigFile, true);
             bos = new OutputStreamWriter(fos, "utf-8");
             bos.write(value);
-            bos.close();
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            bos.flush();
+        } finally {
+            if (bos != null) {
+                bos.close();
+            }
+            if (fos != null) {
+                fos.close();
+            }
         }
-        return;
     }
 
+    /**
+     * 读取文件内容（字符串返回）
+     *
+     * @param path
+     * @return if null or "" 代表读取失败或者空文件
+     */
     public static String readFile(String path) {
         File file = new File(path);
         if (!file.exists()) {
@@ -263,6 +302,7 @@ public final class FileUtils {
             reader.close();
         } catch (Exception e1) {
             e1.printStackTrace();
+            result = null;
         }
         return result;
     }
@@ -274,7 +314,7 @@ public final class FileUtils {
      * @return
      */
     public static long getFileSize(String path) {
-        if (StringUtils.isEmpty(path)) return 0;
+        if (StringExtensionKt.isEmpty(path)) return 0;
         return getFileSize(new File(path));
     }
 
@@ -311,7 +351,7 @@ public final class FileUtils {
      * @see #delFileOrFolder(File)
      */
     public static boolean delFileOrFolder(String path) {
-//        if (StringUtils.isEmpty(path)) return false;
+        if (StringExtensionKt.isEmpty(path)) return false;
         return delFileOrFolder(new File(path));
     }
 

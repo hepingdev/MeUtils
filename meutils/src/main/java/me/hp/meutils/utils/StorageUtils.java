@@ -19,7 +19,7 @@ import java.util.List;
  * @desc: 存储工具类，返回单位：byte
  */
 public class StorageUtils {
-    public static long G_SystemStrageSize = 0;
+    public static long systemStorageSize = 0;
 
     /**
      * 智能获取外部存储器的大小  不包括系统所占的内存
@@ -29,8 +29,8 @@ public class StorageUtils {
      * @return
      */
     public static long getStrageSize() {
-        if (0 != G_SystemStrageSize) {
-            return G_SystemStrageSize;
+        if (0 != systemStorageSize) {
+            return systemStorageSize;
         }
 
         long size = 0;
@@ -65,74 +65,74 @@ public class StorageUtils {
      * @return
      */
     public static void calculatSystemStrageSize(@NonNull Context context) {
-        calculatSystemStrageSize(context, null);
+//        calculatSystemStrageSize(context, null);
     }
 
-    public static void calculatSystemStrageSize(@NonNull Context context, Callback<Long> callback) {
-        if (null == context || G_SystemStrageSize > 0) {
-            if (callback != null) {
-                callback.callback(G_SystemStrageSize);
-            }
-            return;
-        }
-        DeviceUtils.EXECUTORS.execute(() -> {
-            StorageManager storageManager = (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
-            try {
-                Method getVolumes = StorageManager.class.getDeclaredMethod("getVolumes");//6.0
-                List<Object> getVolumeInfo = (List<Object>) getVolumes.invoke(storageManager);
-                long total = 0L, used = 0L;
-                for (Object obj : getVolumeInfo) {
-                    Field getType = obj.getClass().getField("type");
-                    int type = getType.getInt(obj);
-                    MyLogger.d("StorageUtil", "type: " + type);
-                    if (type == 1) {//TYPE_PRIVATE
-                        long totalSize = 0L;
-                        //获取内置内存总大小
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {//7.1.1
-                            //5.0 6.0 7.0没有
-                            Method getPrimaryStorageSize = StorageManager.class.getMethod("getPrimaryStorageSize");
-                            totalSize = (long) getPrimaryStorageSize.invoke(storageManager);
-                            long systemSize = 0L;
-                            Method isMountedReadable = obj.getClass().getDeclaredMethod("isMountedReadable");
-                            boolean readable = (boolean) isMountedReadable.invoke(obj);
-                            if (readable) {
-                                Method file = obj.getClass().getDeclaredMethod("getPath");
-                                File f = (File) file.invoke(obj);
-
-                                if (totalSize == 0) {
-                                    totalSize = f.getTotalSpace();
-                                }
-                                systemSize = totalSize - f.getTotalSpace();
-                                used += totalSize - f.getFreeSpace();
-                                total += totalSize;
-                            }
-                        }
-                    } else if (type == 0) {//TYPE_PUBLIC
-                        //外置存储
-//                    Method isMountedReadable = obj.getClass().getDeclaredMethod("isMountedReadable");
-//                    boolean readable = (boolean) isMountedReadable.invoke(obj);
-//                    if (readable) {
-//                        Method file = obj.getClass().getDeclaredMethod("getPath");
-//                        File f = (File) file.invoke(obj);
-//                        used += f.getTotalSpace() - f.getFreeSpace();
-//                        total += f.getTotalSpace();
+//    public static void calculatSystemStrageSize(@NonNull Context context, Callback<Long> callback) {
+//        if (null == context || systemStorageSize > 0) {
+//            if (callback != null) {
+//                callback.callback(systemStorageSize);
+//            }
+//            return;
+//        }
+//        DeviceUtils.EXECUTORS.execute(() -> {
+//            StorageManager storageManager = (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
+//            try {
+//                Method getVolumes = StorageManager.class.getDeclaredMethod("getVolumes");//6.0
+//                List<Object> getVolumeInfo = (List<Object>) getVolumes.invoke(storageManager);
+//                long total = 0L, used = 0L;
+//                for (Object obj : getVolumeInfo) {
+//                    Field getType = obj.getClass().getField("type");
+//                    int type = getType.getInt(obj);
+//                    MyLogger.d("StorageUtil", "type: " + type);
+//                    if (type == 1) {//TYPE_PRIVATE
+//                        long totalSize = 0L;
+//                        //获取内置内存总大小
+//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {//7.1.1
+//                            //5.0 6.0 7.0没有
+//                            Method getPrimaryStorageSize = StorageManager.class.getMethod("getPrimaryStorageSize");
+//                            totalSize = (long) getPrimaryStorageSize.invoke(storageManager);
+//                            long systemSize = 0L;
+//                            Method isMountedReadable = obj.getClass().getDeclaredMethod("isMountedReadable");
+//                            boolean readable = (boolean) isMountedReadable.invoke(obj);
+//                            if (readable) {
+//                                Method file = obj.getClass().getDeclaredMethod("getPath");
+//                                File f = (File) file.invoke(obj);
+//
+//                                if (totalSize == 0) {
+//                                    totalSize = f.getTotalSpace();
+//                                }
+//                                systemSize = totalSize - f.getTotalSpace();
+//                                used += totalSize - f.getFreeSpace();
+//                                total += totalSize;
+//                            }
+//                        }
+//                    } else if (type == 0) {//TYPE_PUBLIC
+//                        //外置存储
+////                    Method isMountedReadable = obj.getClass().getDeclaredMethod("isMountedReadable");
+////                    boolean readable = (boolean) isMountedReadable.invoke(obj);
+////                    if (readable) {
+////                        Method file = obj.getClass().getDeclaredMethod("getPath");
+////                        File f = (File) file.invoke(obj);
+////                        used += f.getTotalSpace() - f.getFreeSpace();
+////                        total += f.getTotalSpace();
+////                    }
+//                    } else if (type == 2) {//TYPE_EMULATED
+//
 //                    }
-                    } else if (type == 2) {//TYPE_EMULATED
-
-                    }
-                }
-                MyLogger.d("StorageUtil", "总内存 total = " + (total) + " ,已用 used(with system) = " + (used)
-                        + "\n可用 available = " + (total - used));
-                G_SystemStrageSize = total;
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (callback != null) {
-                    callback.callback(G_SystemStrageSize);
-                }
-            }
-        });
-    }
+//                }
+//                MyLogger.d("StorageUtil", "总内存 total = " + (total) + " ,已用 used(with system) = " + (used)
+//                        + "\n可用 available = " + (total - used));
+//                systemStorageSize = total;
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            } finally {
+//                if (callback != null) {
+//                    callback.callback(systemStorageSize);
+//                }
+//            }
+//        });
+//    }
 
     /**
      * 获取文件夹大小

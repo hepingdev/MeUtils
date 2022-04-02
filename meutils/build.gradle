@@ -14,8 +14,8 @@ android {
         consumerProguardFiles "consumer-rules.pro"
     }
 
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding = true
     }
 
     buildTypes {
@@ -39,10 +39,14 @@ dependencies {
     api "androidx.constraintlayout:constraintlayout:${rootProject.ext.constraintlayout}"
     api "androidx.cardview:cardview:${rootProject.ext.cardview}"
     api "androidx.viewpager2:viewpager2:${rootProject.ext.viewPager2}"
+    api "androidx.core:core:${rootProject.ext.kotlin_core_ktx}"
+//    api "com.android.support:support-fragment:${rootProject.ext.fragment_v4}"
+//    api "androidx.fragment:fragment:${rootProject.ext.fragment}"
+//    api "androidx.fragment:fragment-ktx:${rootProject.ext.fragment}"
 
     //kotlin
-    api "androidx.core:core-ktx:${rootProject.ext.kotlin_version}"
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.ext.kotlin_version}"
+    api "androidx.core:core-ktx:${rootProject.ext.kotlin_core_ktx}"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.ext.kotlin_version}"
 
     //other library
     api "com.github.bumptech.glide:glide:${rootProject.ext.glide}"
