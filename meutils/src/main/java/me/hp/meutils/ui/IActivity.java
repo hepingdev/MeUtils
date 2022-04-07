@@ -11,7 +11,7 @@ import com.hjq.permissions.XXPermissions;
 
 import java.util.List;
 
-import me.hp.meutils.MeUtilsConfig;
+import me.hp.meutils.MeUtils;
 import me.hp.meutils.utils.BarUtils;
 import me.hp.meutils.utils.ClassUtils;
 import me.hp.meutils.utils.LogUtils;
@@ -30,7 +30,7 @@ public abstract class IActivity<VB extends ViewBinding> extends AppCompatActivit
      * 有时候需要先于加载视图做些操作，可重写此方法
      */
     protected void beforeSetContentView() {
-        if (!MeUtilsConfig.getInstance().isBottomNavigation()) {
+        if (!MeUtils.getInstance().isHideBottomNavigation()) {
             BarUtils.NavigationUtils.hideBottomNavigation(getWindow());
         }
     }

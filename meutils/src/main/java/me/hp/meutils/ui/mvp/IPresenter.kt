@@ -6,9 +6,9 @@ package me.hp.meutils.ui.mvp
  * @desc:
  */
 abstract class IPresenter<V> {
-    var mView: V? = null
+    var view: V? = null
 
     fun onDestroy() {
-        mView = null
+        view = null
     }
 }
