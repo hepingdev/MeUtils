@@ -40,14 +40,14 @@ public final class FileUtils {
 
     /**
      * 将bitmap保存为文件
-     * 质量等级高
-     *
+     * 需在子线程调用
      * @param bitmap
-     * @param savePath
+     * @param savePath(path and filename)
+     * @param quality 0-100  最高质量是100 中等是50 越往下越差
      * @return
      * @throws IOException 如果抛出异常表示操作失败
      */
-    public static File saveBitmap(Bitmap bitmap, String savePath) throws IOException {
+    public static File saveBitmap(Bitmap bitmap, String savePath, int quality) throws IOException {
         if (StringExtensionKt.isEmpty(savePath)) throw new IOException("savePath is empty.");
 
         File saveFile = new File(savePath);
@@ -55,7 +55,6 @@ public final class FileUtils {
             saveFile.delete();
         }
         Bitmap.CompressFormat format = Bitmap.CompressFormat.JPEG;
-        int quality = 100;
         OutputStream stream = null;
         try {
             stream = new FileOutputStream(saveFile);

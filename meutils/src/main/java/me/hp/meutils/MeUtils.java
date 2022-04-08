@@ -53,5 +53,9 @@ public final class MeUtils {
             LogUtils.setEnable(isEnabled);
             return this;
         }
+
+        public void build(){
+            MeUtils.getInstance().setBuilder(this);
+        }
     }
 }

@@ -2,15 +2,21 @@ package me.hp.meutils.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.os.storage.StorageManager;
 import android.provider.Settings;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -27,7 +33,24 @@ import static android.content.Context.AUDIO_SERVICE;
  * @created: 2022/1/1.
  * @desc: 音量 / 屏幕 /
  */
-public class SystemUtils {
+public final class SystemUtils {
+
+    /**
+     * 振动
+     * 注意：需要在清单文件文件声明权限：<uses-permission android:name="android.permission.VIBRATE"/>
+     *
+     * @param milliseconds 震动多久（毫秒）
+     */
+    public static void vibrate(long milliseconds) {
+        Vibrator vibrator = (Vibrator) MeUtils.getInstance().getContext().getSystemService(Context.VIBRATOR_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createOneShot(milliseconds, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            vibrator.vibrate(milliseconds);
+        }
+    }
+
+
     /**
      * 系统页面
      */
@@ -73,7 +96,7 @@ public class SystemUtils {
     }
 
     /**
-     * 系统音量控制
+     * 系统音量
      */
     public static class VolumeUtils {
         public static final String TAG = VolumeUtils.class.getSimpleName();
@@ -134,7 +157,7 @@ public class SystemUtils {
     }
 
     /**
-     * 屏幕参数
+     * 系统屏幕参数
      */
     public static class ScreenUtils {
         public static final String TAG = ScreenUtils.class.getSimpleName();
@@ -232,7 +255,7 @@ public class SystemUtils {
     }
 
     /**
-     * 存储（byte）
+     * 系统存储（byte）
      */
     public static class StorageUtils {
         public static final String TAG = StorageUtils.class.getSimpleName();
@@ -372,6 +395,111 @@ public class SystemUtils {
                 e.printStackTrace();
             }
             return systemSize;
+        }
+    }
+
+    /**
+     * 系统位置信息
+     */
+    public static class LocationUtils {
+        /**
+         * GPS是否打开
+         *
+         * @return
+         */
+        public static boolean isGPSEnabled() {
+            LocationManager locationManager = (LocationManager) MeUtils.getInstance().getContext().getSystemService(Context.LOCATION_SERVICE);
+            return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        }
+    }
+
+
+    /**
+     * 系统软件信息
+     */
+    public static class AppUtils {
+        /**
+         * 获取软件的包名
+         *
+         * @return
+         */
+        public static String getPackageName() {
+            return MeUtils.getInstance().getContext().getPackageName();
+        }
+
+        /**
+         * 获取软件对外显示的版本信息
+         * 此方法也可用作判断程序是否已经安装，返回""即未安装，反之安装了
+         *
+         * @param packageName app包名
+         * @return
+         */
+        public static String getVersionName(String packageName) {
+            String versionName = "";
+            try {
+                PackageInfo packageInfo = MeUtils.getInstance().getContext().getPackageManager().getPackageInfo(packageName, 0);
+                if (packageInfo != null) {
+                    versionName = packageInfo.versionName;
+                }
+            } catch (PackageManager.NameNotFoundException e) {
+            }
+            return versionName;
+        }
+
+
+        /**
+         * 获取软件对内的开发版本号
+         * 此方法也可用作判断程序是否已经安装，返回-1即未安装，反之安装了
+         *
+         * @param context
+         * @return
+         */
+        public static int getVersionCode(Context context) {
+            int versionCode = -1;
+            try {
+                String packageName = context.getPackageName();
+                PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, 0);
+                if (packageInfo != null) {
+                    versionCode = packageInfo.versionCode;
+                }
+            } catch (PackageManager.NameNotFoundException e) {
+            }
+            return versionCode;
+        }
+
+
+        /**
+         * @return android.net.Uri
+         * @Description 适配Android7.0 获取文件的uri地址
+         **/
+        public static Uri getUriFromFile(File file) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                return FileProvider.getUriForFile(MeUtils.getInstance().getContext(), getPackageName() + ".FileProvider", file);
+            } else {
+                return Uri.fromFile(file);
+            }
+        }
+
+
+        /**
+         * 安装APK
+         *
+         * @param file apk文件
+         */
+        public static void installAPK(File file) {
+            if (file == null || !file.exists()) {
+                return;
+            }
+            try {
+                Uri uri = getUriFromFile(file);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.setDataAndType(uri, "application/vnd.android.package-archive");
+                MeUtils.getInstance().getContext().startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

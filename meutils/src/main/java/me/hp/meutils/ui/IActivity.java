@@ -31,7 +31,7 @@ public abstract class IActivity<VB extends ViewBinding> extends AppCompatActivit
      */
     protected void beforeSetContentView() {
         if (!MeUtils.getInstance().isHideBottomNavigation()) {
-            BarUtils.NavigationUtils.hideBottomNavigation(getWindow());
+            BarUtils.NavigationBarUtils.hideBottomNavigation(getWindow());
         }
     }
 

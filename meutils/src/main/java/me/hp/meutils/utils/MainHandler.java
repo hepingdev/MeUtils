@@ -6,7 +6,7 @@ import android.os.Looper;
 /**
  * Created by ApplePie on 2019/1/20.
  */
-public class MainHandler extends Handler {
+public final class MainHandler extends Handler {
 
     public static MainHandler getInstance() {
         return SingletonHolder.instance;

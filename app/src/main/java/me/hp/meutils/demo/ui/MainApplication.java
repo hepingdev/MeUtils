@@ -14,9 +14,9 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        MeUtils.getInstance().setBuilder(
-                new MeUtils.Builder(this)
-                        .setLogEnabled(true)
-                        .setHideBottomNavigation(true));
+        new MeUtils.Builder(this)
+                .setLogEnabled(true)
+                .setHideBottomNavigation(true)
+                .build();
     }
 }

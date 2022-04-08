@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <paths>
+        <!--<external-path name="camera_out_file" path="TQImageSelector/CameraImage/" />-->
+        <external-files-path
+            name="BeBO_Course_Files"
+            path="." />
+        <external-cache-path
+            name="BeBO_Course_cache"
+            path="files" />
+
+    </paths>
+</resources>

@@ -7,7 +7,7 @@ import android.util.Log;
  * @created: 2019/8/15.
  * @desc: 日志打印
  */
-public class LogUtils {
+public final class LogUtils {
     private static String methodName;            //所在的方法名
     private static int lineNumber;                //所在行号
 
