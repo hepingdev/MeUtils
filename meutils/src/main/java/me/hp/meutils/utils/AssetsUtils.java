@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 /**
  * Created by heping on 2019/1/20.
  */
-public class AssetsUtils {
+public final class AssetsUtils {
 
     /**
      * 读取assets文件夹中的json文件

@@ -24,7 +24,7 @@ import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import me.hp.meutils.MeUtils;
+import me.hp.meutils.ui.IApplication;
 
 import static android.content.Context.AUDIO_SERVICE;
 
@@ -42,7 +42,7 @@ public final class SystemUtils {
      * @param milliseconds 震动多久（毫秒）
      */
     public static void vibrate(long milliseconds) {
-        Vibrator vibrator = (Vibrator) MeUtils.getInstance().getContext().getSystemService(Context.VIBRATOR_SERVICE);
+        Vibrator vibrator = (Vibrator) IApplication.getContext().getSystemService(Context.VIBRATOR_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             vibrator.vibrate(VibrationEffect.createOneShot(milliseconds, VibrationEffect.DEFAULT_AMPLITUDE));
         } else {
@@ -59,28 +59,28 @@ public final class SystemUtils {
          * 跳转到蓝牙页面
          */
         public static void bluetoothSetting() {
-            MeUtils.getInstance().getContext().startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));
+            IApplication.getContext().startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));
         }
 
         /**
          * 跳转wifi连接页面
          */
         public static void wifiSetting() {
-            MeUtils.getInstance().getContext().startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+            IApplication.getContext().startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
         }
 
         /**
          * 跳转到系统设置页面
          */
         public static void setting() {
-            MeUtils.getInstance().getContext().startActivity(new Intent(Settings.ACTION_SETTINGS));
+            IApplication.getContext().startActivity(new Intent(Settings.ACTION_SETTINGS));
         }
 
         /**
          * 跳转到日期时间设置页面
          */
         public static void dataOrTimeSetting() {
-            MeUtils.getInstance().getContext().startActivity(new Intent(Settings.ACTION_DATE_SETTINGS));
+            IApplication.getContext().startActivity(new Intent(Settings.ACTION_DATE_SETTINGS));
         }
 
         /**
@@ -91,7 +91,7 @@ public final class SystemUtils {
             Uri uri = Uri.fromParts("package", packageName, null);
             intent.setData(uri);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            MeUtils.getInstance().getContext().startActivity(intent);
+            IApplication.getContext().startActivity(intent);
         }
     }
 
@@ -107,7 +107,7 @@ public final class SystemUtils {
          * @param volumeValue 范围【0-100】
          */
         public static void setVolume(int volumeValue) {
-            AudioManager am = (AudioManager) MeUtils.getInstance().getContext().getSystemService(AUDIO_SERVICE);
+            AudioManager am = (AudioManager) IApplication.getContext().getSystemService(AUDIO_SERVICE);
             int maxVolume = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
             int volume = maxVolume * volumeValue / 100;
             LogUtils.d(TAG, "setVolume: " + volume);
@@ -121,7 +121,7 @@ public final class SystemUtils {
          * @return
          */
         public static int getCurrentVolume(boolean needActual) {
-            AudioManager am = (AudioManager) MeUtils.getInstance().getContext().getSystemService(AUDIO_SERVICE);
+            AudioManager am = (AudioManager) IApplication.getContext().getSystemService(AUDIO_SERVICE);
             if (needActual) {
                 int maxVolume = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
                 return (int) (Math.ceil((am.getStreamVolume(AudioManager.STREAM_MUSIC) * 100f) / maxVolume));
@@ -134,7 +134,7 @@ public final class SystemUtils {
          * 增加音量
          */
         public static void addVolume() {
-            AudioManager am = (AudioManager) MeUtils.getInstance().getContext().getSystemService(AUDIO_SERVICE);
+            AudioManager am = (AudioManager) IApplication.getContext().getSystemService(AUDIO_SERVICE);
             int curVolue = am.getStreamVolume(AudioManager.STREAM_MUSIC) + 1;
             int maxVolume = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
             if (curVolue > maxVolume) {
@@ -147,7 +147,7 @@ public final class SystemUtils {
          * 减少音量
          */
         public static void subVolume() {
-            AudioManager am = (AudioManager) MeUtils.getInstance().getContext().getSystemService(AUDIO_SERVICE);
+            AudioManager am = (AudioManager) IApplication.getContext().getSystemService(AUDIO_SERVICE);
             int curVolue = am.getStreamVolume(AudioManager.STREAM_MUSIC) - 1;
             if (curVolue < 0) {
                 curVolue = 0;
@@ -168,7 +168,7 @@ public final class SystemUtils {
          * @return
          */
         public static int getDeviceWidthPixel() {
-            return MeUtils.getInstance().getContext().getResources().getDisplayMetrics().widthPixels;
+            return IApplication.getContext().getResources().getDisplayMetrics().widthPixels;
         }
 
         /**
@@ -177,7 +177,7 @@ public final class SystemUtils {
          * @return
          */
         public static int getDeviceHeightPixel() {
-            return MeUtils.getInstance().getContext().getResources().getDisplayMetrics().heightPixels;
+            return IApplication.getContext().getResources().getDisplayMetrics().heightPixels;
         }
 
         /**
@@ -186,7 +186,7 @@ public final class SystemUtils {
          * @return
          */
         public static float getDeviceDensity() {
-            return MeUtils.getInstance().getContext().getResources().getDisplayMetrics().density;
+            return IApplication.getContext().getResources().getDisplayMetrics().density;
         }
 
         /**
@@ -195,7 +195,7 @@ public final class SystemUtils {
          * @return
          */
         public static float getDeviceDensityDPI() {
-            return MeUtils.getInstance().getContext().getResources().getDisplayMetrics().densityDpi;
+            return IApplication.getContext().getResources().getDisplayMetrics().densityDpi;
         }
 
         /**
@@ -227,7 +227,7 @@ public final class SystemUtils {
          * @return
          */
         public static int dip2px(float dipValue) {
-            final float scale = MeUtils.getInstance().getContext().getResources().getDisplayMetrics().density;
+            final float scale = IApplication.getContext().getResources().getDisplayMetrics().density;
             return (int) (dipValue * scale + 0.5f);
         }
 
@@ -238,7 +238,7 @@ public final class SystemUtils {
          * @return
          */
         public static int px2sp(float pxValue) {
-            final float fontScale = MeUtils.getInstance().getContext().getResources().getDisplayMetrics().scaledDensity;
+            final float fontScale = IApplication.getContext().getResources().getDisplayMetrics().scaledDensity;
             return (int) (pxValue / fontScale + 0.5f);
         }
 
@@ -249,7 +249,7 @@ public final class SystemUtils {
          * @return
          */
         public static int sp2px(float spValue) {
-            final float fontScale = MeUtils.getInstance().getContext().getResources().getDisplayMetrics().scaledDensity;
+            final float fontScale = IApplication.getContext().getResources().getDisplayMetrics().scaledDensity;
             return (int) (spValue * fontScale + 0.5f);
         }
     }
@@ -347,7 +347,7 @@ public final class SystemUtils {
             //总共，可使用
             long total = 0L, used = 0L, systemSize = 0L;
 
-            StorageManager storageManager = (StorageManager) MeUtils.getInstance().getContext().getSystemService(Context.STORAGE_SERVICE);
+            StorageManager storageManager = (StorageManager) IApplication.getContext().getSystemService(Context.STORAGE_SERVICE);
             try {
                 Method getVolumes = StorageManager.class.getDeclaredMethod("getVolumes");
                 List<Object> getVolumeInfo = (List<Object>) getVolumes.invoke(storageManager);
@@ -408,7 +408,7 @@ public final class SystemUtils {
          * @return
          */
         public static boolean isGPSEnabled() {
-            LocationManager locationManager = (LocationManager) MeUtils.getInstance().getContext().getSystemService(Context.LOCATION_SERVICE);
+            LocationManager locationManager = (LocationManager) IApplication.getContext().getSystemService(Context.LOCATION_SERVICE);
             return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         }
     }
@@ -424,7 +424,7 @@ public final class SystemUtils {
          * @return
          */
         public static String getPackageName() {
-            return MeUtils.getInstance().getContext().getPackageName();
+            return IApplication.getContext().getPackageName();
         }
 
         /**
@@ -437,7 +437,7 @@ public final class SystemUtils {
         public static String getVersionName(String packageName) {
             String versionName = "";
             try {
-                PackageInfo packageInfo = MeUtils.getInstance().getContext().getPackageManager().getPackageInfo(packageName, 0);
+                PackageInfo packageInfo = IApplication.getContext().getPackageManager().getPackageInfo(packageName, 0);
                 if (packageInfo != null) {
                     versionName = packageInfo.versionName;
                 }
@@ -474,7 +474,7 @@ public final class SystemUtils {
          **/
         public static Uri getUriFromFile(File file) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                return FileProvider.getUriForFile(MeUtils.getInstance().getContext(), getPackageName() + ".FileProvider", file);
+                return FileProvider.getUriForFile(IApplication.getContext(), getPackageName() + ".FileProvider", file);
             } else {
                 return Uri.fromFile(file);
             }
@@ -496,7 +496,7 @@ public final class SystemUtils {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.setDataAndType(uri, "application/vnd.android.package-archive");
-                MeUtils.getInstance().getContext().startActivity(intent);
+                IApplication.getContext().startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();
             }

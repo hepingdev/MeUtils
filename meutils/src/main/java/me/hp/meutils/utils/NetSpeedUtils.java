@@ -5,7 +5,7 @@ import android.net.TrafficStats;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import me.hp.meutils.MeUtils;
+import me.hp.meutils.ui.IApplication;
 
 /**
  * @author: HePing
@@ -61,7 +61,7 @@ public final class NetSpeedUtils {
      * @return
      */
     private long getTotalRxBytes() {
-        return TrafficStats.getUidRxBytes(MeUtils.getInstance().getContext().getApplicationInfo().uid) == TrafficStats.UNSUPPORTED ? 0 : (TrafficStats.getTotalRxBytes() / 1024);//转为KB
+        return TrafficStats.getUidRxBytes(IApplication.getContext().getApplicationInfo().uid) == TrafficStats.UNSUPPORTED ? 0 : (TrafficStats.getTotalRxBytes() / 1024);//转为KB
     }
 
     private void showNetSpeed() {

@@ -5,7 +5,7 @@
  */
 ext {
     //app config
-    compileSdkVersion = 30
+    compileSdkVersion = 31
     minSdkVersion = 21
     targetSdkVersion = 29
     versionCode = 1
@@ -23,6 +23,8 @@ ext {
     cardview = '1.0.0'
     viewPager2 = '1.0.0'
     fragment = '1.4.1'
+    multidex = '2.0.1'
+    lifecycle_version = '2.4.1'
 
     //other library
     glide = '4.13.0'

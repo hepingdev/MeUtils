@@ -11,28 +11,26 @@ import com.hjq.permissions.XXPermissions;
 
 import java.util.List;
 
-import me.hp.meutils.MeUtils;
-import me.hp.meutils.utils.BarUtils;
 import me.hp.meutils.utils.ClassUtils;
 import me.hp.meutils.utils.LogUtils;
 
 
 /**
- * @author: HePing
+ * @author: hepingdev
  * @created: 2018/09/04.
- * @desc:
+ * @desc: Activity基类(不采用MVP)， 很简单的页面，不存在数据请求获取，不需要编写Presenter
  */
 public abstract class IActivity<VB extends ViewBinding> extends AppCompatActivity implements OnPermissionCallback {
     public final String TAG = this.getClass().getSimpleName();
+
     protected VB mBinding;
+//    private BasePopupView mPopupView;//全局统一加载弹窗
 
     /**
      * 有时候需要先于加载视图做些操作，可重写此方法
      */
     protected void beforeSetContentView() {
-        if (!MeUtils.getInstance().isHideBottomNavigation()) {
-            BarUtils.NavigationBarUtils.hideBottomNavigation(getWindow());
-        }
+
     }
 
     /**
@@ -42,7 +40,7 @@ public abstract class IActivity<VB extends ViewBinding> extends AppCompatActivit
     }
 
     /**
-     * 初始化presenter对象, MVPActivity需要，其他不用自己重写
+     * 初始化presenter对象使用, 给{@link me.hp.meutils.ui.mvp.IMVPActivity}用的，不需要重写！！！
      */
     protected void initPresenter() {
     }
@@ -55,7 +53,7 @@ public abstract class IActivity<VB extends ViewBinding> extends AppCompatActivit
     protected abstract void initView(Bundle savedInstanceState);
 
     /**
-     * 此方法会请求权限成功后才会回调
+     * 此方法请求权限成功后才会回调！！！
      */
     protected abstract void initData();
 
@@ -64,7 +62,7 @@ public abstract class IActivity<VB extends ViewBinding> extends AppCompatActivit
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LogUtils.d(TAG, "---------> onCreate <---------");
-        //是从盒子app历史列表里面启动的
+        //是从app历史列表里面启动的
         if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0) {
             LogUtils.e(TAG, "app非法启动!");
             illegal();

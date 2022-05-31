@@ -3,7 +3,7 @@ package me.hp.meutils.utils;
 import android.util.Log;
 
 /**
- * @author: HePing
+ * @author: hepingdev
  * @created: 2019/8/15.
  * @desc: 日志打印
  */

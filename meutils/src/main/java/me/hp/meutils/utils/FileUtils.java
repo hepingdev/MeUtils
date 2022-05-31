@@ -22,13 +22,11 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Enumeration;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import me.hp.meutils.extension.StringExtensionKt;
 
 /**
  * @author: HePing
@@ -41,14 +39,15 @@ public final class FileUtils {
     /**
      * 将bitmap保存为文件
      * 需在子线程调用
+     *
      * @param bitmap
      * @param savePath(path and filename)
-     * @param quality 0-100  最高质量是100 中等是50 越往下越差
+     * @param quality       0-100  最高质量是100 中等是50 越往下越差
      * @return
      * @throws IOException 如果抛出异常表示操作失败
      */
     public static File saveBitmap(Bitmap bitmap, String savePath, int quality) throws IOException {
-        if (StringExtensionKt.isEmpty(savePath)) throw new IOException("savePath is empty.");
+        if (StringUtils.isEmpty(savePath)) throw new IOException("savePath is empty.");
 
         File saveFile = new File(savePath);
         if (saveFile != null && saveFile.exists()) {
@@ -313,7 +312,7 @@ public final class FileUtils {
      * @return
      */
     public static long getFileSize(String path) {
-        if (StringExtensionKt.isEmpty(path)) return 0;
+        if (StringUtils.isEmpty(path)) return 0;
         return getFileSize(new File(path));
     }
 
@@ -350,7 +349,7 @@ public final class FileUtils {
      * @see #delFileOrFolder(File)
      */
     public static boolean delFileOrFolder(String path) {
-        if (StringExtensionKt.isEmpty(path)) return false;
+        if (StringUtils.isEmpty(path)) return false;
         return delFileOrFolder(new File(path));
     }
 

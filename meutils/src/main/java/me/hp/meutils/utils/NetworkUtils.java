@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import me.hp.meutils.MeUtils;
+import me.hp.meutils.ui.IApplication;
 
 /**
  * @author: HePing
@@ -20,7 +20,7 @@ public final class NetworkUtils {
      * @return
      */
     public static boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) MeUtils.getInstance().getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) IApplication.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             return true;
@@ -35,7 +35,7 @@ public final class NetworkUtils {
      * @return
      */
     public static boolean isWifi() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) MeUtils.getInstance().getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) IApplication.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo wifiInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         if (null != wifiInfo && wifiInfo.isConnected()) {
             return true;

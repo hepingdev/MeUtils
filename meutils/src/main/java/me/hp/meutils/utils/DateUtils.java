@@ -1,6 +1,5 @@
 package me.hp.meutils.utils;
 
-import android.content.Context;
 import android.text.format.DateFormat;
 
 import java.text.ParseException;
@@ -12,7 +11,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-import me.hp.meutils.MeUtils;
+import me.hp.meutils.ui.IApplication;
 
 /**
  * @author: HePing
@@ -287,10 +286,11 @@ public class DateUtils {
 
     /**
      * 是否是24小时制
+     *
      * @return
      */
     public static boolean is24HourFormat() {
-        return DateFormat.is24HourFormat(MeUtils.getInstance().getContext());
+        return DateFormat.is24HourFormat(IApplication.getContext());
     }
 
 }
