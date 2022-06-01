@@ -6,7 +6,7 @@
 * 建议JDK版本：1.8
 
 ## 项目结构说明
-![](https://cdn.nlark.com/yuque/0/2022/jpeg/480768/1654045773280-851b11a9-46bc-41a3-a7da-54b083bd5a76.jpeg)
+<img src="https://cdn.nlark.com/yuque/0/2022/jpeg/480768/1654045773280-851b11a9-46bc-41a3-a7da-54b083bd5a76.jpeg" width="80%" alt="MeUtils"/>
 
 ## Gradle集成步骤
 [![](https://jitpack.io/v/hepingdev/MeUtils.svg)](https://jitpack.io/#hepingdev/MeUtils)
