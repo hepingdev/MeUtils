@@ -36,22 +36,6 @@ import static android.content.Context.AUDIO_SERVICE;
 public final class SystemUtils {
 
     /**
-     * 振动
-     * 注意：需要在清单文件文件声明权限：<uses-permission android:name="android.permission.VIBRATE"/>
-     *
-     * @param milliseconds 震动多久（毫秒）
-     */
-    public static void vibrate(long milliseconds) {
-        Vibrator vibrator = (Vibrator) IApplication.getContext().getSystemService(Context.VIBRATOR_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vibrator.vibrate(VibrationEffect.createOneShot(milliseconds, VibrationEffect.DEFAULT_AMPLITUDE));
-        } else {
-            vibrator.vibrate(milliseconds);
-        }
-    }
-
-
-    /**
      * 系统页面
      */
     public static class PageUtils {
@@ -100,6 +84,21 @@ public final class SystemUtils {
      */
     public static class VolumeUtils {
         public static final String TAG = VolumeUtils.class.getSimpleName();
+
+        /**
+         * 振动
+         * 注意：需要在清单文件文件声明权限：<uses-permission android:name="android.permission.VIBRATE"/>
+         *
+         * @param milliseconds 震动多久（毫秒）
+         */
+        public static void vibrate(long milliseconds) {
+            Vibrator vibrator = (Vibrator) IApplication.getContext().getSystemService(Context.VIBRATOR_SERVICE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(VibrationEffect.createOneShot(milliseconds, VibrationEffect.DEFAULT_AMPLITUDE));
+            } else {
+                vibrator.vibrate(milliseconds);
+            }
+        }
 
         /**
          * 设置音量
@@ -413,7 +412,6 @@ public final class SystemUtils {
         }
     }
 
-
     /**
      * 系统软件信息
      */
@@ -502,4 +500,7 @@ public final class SystemUtils {
             }
         }
     }
+
+
+
 }

@@ -5,6 +5,9 @@
 * 支持最低Android SDK版本：Android 5.0 Lollipop （API 21）    //如果低于此版本，将会导致某些功能无法使用或者发生异常
 * 建议JDK版本：1.8
 
+## 项目结构说明
+![](https://cdn.nlark.com/yuque/0/2022/jpeg/480768/1654045773280-851b11a9-46bc-41a3-a7da-54b083bd5a76.jpeg)
+
 ## Gradle集成步骤
 [![](https://jitpack.io/v/hepingdev/MeUtils.svg)](https://jitpack.io/#hepingdev/MeUtils)
 
