@@ -54,6 +54,6 @@ dependencies {
     api "com.github.getActivity:XXPermissions:${rootProject.ext.permissions}"
     api "com.github.getActivity:ToastUtils:${rootProject.ext.toast}"
     api "com.github.getActivity:EasyHttp:${rootProject.ext.easyhttp}"
-    api "me.jessyan:autosize:${rootProject.ext.androidAutoSize}"
+//    api "me.jessyan:autosize:${rootProject.ext.androidAutoSize}"
     api "com.github.CymChad:BaseRecyclerViewAdapterHelper:${rootProject.ext.recyclerviewAdapterHelper}"
 }

@@ -1,4 +1,4 @@
-package me.hp.meutils.demo.ui;
+package me.hp.meutils.demo;
 
 import me.hp.meutils.ui.IApplication;
 

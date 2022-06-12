@@ -1,4 +1,4 @@
-package me.hp.meutils.demo.ui;
+package me.hp.meutils.demo.ui.page.main.contract;
 
 import me.hp.meutils.ui.mvp.IPresenter;
 import me.hp.meutils.ui.mvp.IView;

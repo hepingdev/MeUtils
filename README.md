@@ -1,25 +1,49 @@
 # MeUtils
 根据日常工作需求，整合了一个Android项目快速开发库，节省开发时间🔥🤝。
+## 环境说明
+```groovy
+android {
+    //1. SDK编译版本>=31
+    compileSdkVersion 31
+    defaultConfig {        
+        //2. 最低支持Android 5.0 Lollipop （API 21）
+        minSdkVersion 21
+    }
+    
+    
+    //3. JDK编译版本
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+```
+## 功能结构
+![](https://cdn.nlark.com/yuque/0/2022/jpeg/480768/1654141438396-94dd7be8-fa1e-4318-a133-82ec66d3a76b.jpeg)
 
-## 项目环境说明
-* 支持最低Android SDK版本：Android 5.0 Lollipop （API 21）    //如果低于此版本，将会导致某些功能无法使用或者发生异常
-* 建议JDK版本：1.8
+## Gradle集成
+![](https://jitpack.io/v/hepingdev/MeUtils.svg#crop=0&crop=0&crop=1&crop=1&id=jdikR&originHeight=20&originWidth=125&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=)
 
-## 项目结构说明
-<img src="https://cdn.nlark.com/yuque/0/2022/jpeg/480768/1654045773280-851b11a9-46bc-41a3-a7da-54b083bd5a76.jpeg" width="80%" alt="MeUtils"/>
+- 在工程根目录`build.gradle`文件中添加`jitpack`仓库地址：
+```groovy
+allprojects {
+    repositories {
+        ...
+        //jitpack仓库地址
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
 
-## Gradle集成步骤
-[![](https://jitpack.io/v/hepingdev/MeUtils.svg)](https://jitpack.io/#hepingdev/MeUtils)
+- 在工程`app`模块`build.gradle`文件中添加此项目依赖：
+```groovy
+implementation 'com.github.hepingdev:MeUtils:0.0.1-alpha'
+```
 
-## 初始化
+## 使用步骤
 
-## 根据需求选择依赖的库
-* 超过最大方法数限制的问题: androidx.multidex:multidex:2.0.1
-* gif图播放: com.github.Cutta:GifView:1.4
-* 截屏: com.github.tarek360:instacapture:2.0.1
-* 复杂效果播放（需要UI出专门的图): com.airbnb.android:lottie:2.7.0
-* 轮播图：io.github.youth5201314:banner:2.2.2
+## 依赖库说明
 
-## 待实现的功能点
-* 截屏
-* 安装apk文件，弄清楚xml里面目录的含义
+## 参考文章
+[BigDecimal - 用于加、减、乘、除计算的工具类](https://www.jianshu.com/p/8f52256843b2)
+
