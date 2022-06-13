@@ -33,6 +33,7 @@ ext {
     easyhttp = '10.8'
     androidAutoSize = '1.2.1'
     recyclerviewAdapterHelper = '3.0.7'
+    circleimageview = '3.1.0'
 }
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.

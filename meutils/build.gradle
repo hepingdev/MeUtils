@@ -56,4 +56,5 @@ dependencies {
     api "com.github.getActivity:EasyHttp:${rootProject.ext.easyhttp}"
 //    api "me.jessyan:autosize:${rootProject.ext.androidAutoSize}"
     api "com.github.CymChad:BaseRecyclerViewAdapterHelper:${rootProject.ext.recyclerviewAdapterHelper}"
+    implementation "de.hdodenhof:circleimageview:3.1.0"
 }
