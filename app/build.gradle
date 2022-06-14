@@ -32,8 +32,8 @@ android {
 }
 
 dependencies {
-//    implementation project(path: ':meutils')
-    implementation 'com.github.hepingdev:MeUtils:0.0.1-alpha'
+    implementation project(path: ':meutils')
+//    implementation 'com.github.hepingdev:MeUtils:0.0.2-alpha'
 
     //kotlin
 //    api "androidx.core:core:${rootProject.ext.kotlin_core_ktx}"
