@@ -1,5 +1,8 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
+plugins {
+    id 'com.android.library'
+    id 'maven-publish' // 导入 maven-publish 插件
+}
+
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -29,6 +32,30 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    //maven-publish插件配置信息
+    afterEvaluate {
+        publishing {
+            publications {
+                release(MavenPublication) {
+                    from components.release
+
+                    //以github仓库tag为主，这里配置的都不会生效
+                    groupId = 'com.github.hepingdev'
+                    artifactId = 'MeUtils'
+                    version = '0.0.1-alpha'
+                }
+
+                debug(MavenPublication) {
+                    from components.debug
+                    //以github仓库tag为主，这里配置的都不会生效
+                    groupId = 'com.github.hepingdev'
+                    artifactId = 'MeUtils'
+                    version = '0.0.1-alpha'
+                }
+            }
+        }
+    }
 }
 
 dependencies {
@@ -44,9 +71,9 @@ dependencies {
     api "androidx.lifecycle:lifecycle-process:${rootProject.ext.lifecycle_version}"
 
     //kotlin
-    api "androidx.core:core:${rootProject.ext.kotlin_core_ktx}"
-    api "androidx.core:core-ktx:${rootProject.ext.kotlin_core_ktx}"
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.ext.kotlin_version}"
+//    api "androidx.core:core:${rootProject.ext.kotlin_core_ktx}"
+//    api "androidx.core:core-ktx:${rootProject.ext.kotlin_core_ktx}"
+//    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.ext.kotlin_version}"
 
     //other library
     api "com.github.bumptech.glide:glide:${rootProject.ext.glide}"
