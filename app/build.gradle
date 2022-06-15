@@ -33,9 +33,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
-//    implementation 'com.github.yirenyishi:common-utils:v1.0'
     implementation project(path: ':meutils')
-//    implementation 'com.github.hepingdev:MeUtils:0.0.3-alpha'
+//    implementation 'com.github.hepingdev:MeUtils:0.0.4-alpha'
 
     //kotlin
 //    api "androidx.core:core:${rootProject.ext.kotlin_core_ktx}"

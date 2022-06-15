@@ -34,36 +34,36 @@ android {
     }
 
     packagingOptions {
-        // 剔除这个包下的所有文件（不会移除签名信息）
+        // 剔除这个包下的所有文件（不会移除相关签名信息）
         exclude 'META-INF/*******'
     }
 }
 
-tasks.withType(Javadoc) {
-    options.addStringOption('Xdoclint:none', '-quiet')
-    options.addStringOption('encoding', 'UTF-8')
-    options.addStringOption('charSet', 'UTF-8')
-}
-
 //maven-publish插件配置信息
 afterEvaluate {
+    // 排除 BuildConfig.class 和 R.class
+    generateReleaseBuildConfig.enabled = false
+    generateDebugBuildConfig.enabled = false
+    generateReleaseResValues.enabled = false
+    generateDebugResValues.enabled = false
+
     publishing {
         publications {
-//            release(MavenPublication) {
-//                from components.release
-//
-//                //以github仓库tag为主，这里配置的都不会生效
-//                groupId = 'com.github.hepingdev'
-//                artifactId = 'MeUtils'
-//                version = '0.0.1-alpha'
-//            }
+            release(MavenPublication) {
+                from components.release
 
-            debug(MavenPublication) {
-                from components.debug
                 //以github仓库tag为主，这里配置的都不会生效
                 groupId = 'com.github.hepingdev'
                 artifactId = 'MeUtils'
-                version = '0.0.4-alpha'
+                version = '0.0.5-alpha'
+            }
+
+            debug(MavenPublication) {
+                from components.debug
+
+                groupId = 'com.github.hepingdev'
+                artifactId = 'MeUtils'
+                version = '0.0.5-alpha'
             }
         }
     }
