@@ -49,22 +49,13 @@ afterEvaluate {
 
     publishing {
         publications {
-            //一次只能有一个发布任务
-            release(MavenPublication) {
-                from components.release
+            debug(MavenPublication) {
+                from components.debug
 
-                groupId = 'com.github.hepingdev'
-                artifactId = 'MeUtils'
-                version = '0.0.6-alpha'
+                groupId = rootProject.ext.pubGroupId
+                artifactId = rootProject.ext.pubArtifactId
+                version = rootProject.ext.pubVersion
             }
-
-//            debug(MavenPublication) {
-//                from components.debug
-//
-//                groupId = 'com.github.hepingdev'
-//                artifactId = 'MeUtils'
-//                version = '0.0.5-alpha'
-//            }
         }
     }
 }
