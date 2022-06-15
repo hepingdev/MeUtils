@@ -49,22 +49,22 @@ afterEvaluate {
 
     publishing {
         publications {
+            //一次只能有一个发布任务
             release(MavenPublication) {
                 from components.release
 
-                //以github仓库tag为主，这里配置的都不会生效
                 groupId = 'com.github.hepingdev'
                 artifactId = 'MeUtils'
-                version = '0.0.5-alpha'
+                version = '0.0.6-alpha'
             }
 
-            debug(MavenPublication) {
-                from components.debug
-
-                groupId = 'com.github.hepingdev'
-                artifactId = 'MeUtils'
-                version = '0.0.5-alpha'
-            }
+//            debug(MavenPublication) {
+//                from components.debug
+//
+//                groupId = 'com.github.hepingdev'
+//                artifactId = 'MeUtils'
+//                version = '0.0.5-alpha'
+//            }
         }
     }
 }
