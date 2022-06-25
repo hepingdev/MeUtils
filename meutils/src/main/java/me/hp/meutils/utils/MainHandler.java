@@ -4,7 +4,9 @@ import android.os.Handler;
 import android.os.Looper;
 
 /**
- * Created by ApplePie on 2019/1/20.
+ * @author: hepingdev
+ * @created: 2019/1/20.
+ * @desc:
  */
 public final class MainHandler extends Handler {
 

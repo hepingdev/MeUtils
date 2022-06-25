@@ -37,7 +37,7 @@ public final class FileUtils {
     public static final String TAG = FileUtils.class.getSimpleName();
 
     /**
-     * 将bitmap保存为文件
+     * 将bitmap保存为图片文件
      * 需在子线程调用
      *
      * @param bitmap

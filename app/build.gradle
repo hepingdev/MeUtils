@@ -32,15 +32,15 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
-    implementation project(path: ':meutils')
-//    implementation 'com.github.hepingdev:MeUtils:0.0.6-alpha'
-
     //kotlin
 //    api "androidx.core:core:${rootProject.ext.kotlin_core_ktx}"
 //    api "androidx.core:core-ktx:${rootProject.ext.kotlin_core_ktx}"
 //    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.ext.kotlin_version}"
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    implementation project(path: ':meutils')
+//    implementation 'com.github.hepingdev:MeUtils:0.0.7-alpha'
 }
