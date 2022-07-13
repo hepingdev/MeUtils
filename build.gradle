@@ -22,7 +22,7 @@ ext {
 
     //android library
     appcompat = '1.2.0'
-    material = '1.4.0'
+    material = '1.2.1'
     recyclerview = '1.2.1'
     constraintlayout = '2.0.4'
     cardview = '1.0.0'

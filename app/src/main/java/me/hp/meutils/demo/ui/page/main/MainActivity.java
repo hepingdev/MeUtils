@@ -1,13 +1,13 @@
 package me.hp.meutils.demo.ui.page.main;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
-import org.jetbrains.annotations.NotNull;
+import java.util.Arrays;
 
 import me.hp.meutils.demo.databinding.ActivityMainBinding;
+import me.hp.meutils.demo.ui.page.main.adapter.MainListAdapter;
 import me.hp.meutils.demo.ui.page.main.contract.MainContract;
 import me.hp.meutils.ui.mvp.IMVPActivity;
 import me.hp.meutils.utils.LogUtils;
@@ -19,14 +19,19 @@ import me.hp.meutils.utils.LogUtils;
  */
 public class MainActivity extends IMVPActivity<ActivityMainBinding, MainContract.Presenter> implements MainContract.View {
 
+    private MainListAdapter mAdapter;
+
     @Override
     protected void initView(Bundle savedInstanceState) {
+        if (mAdapter == null)
+            mAdapter = new MainListAdapter(Arrays.asList("北京", "上海", "杭州", "深圳", "广州", "成都", "长沙"));
+        mBinding.activityMainRecycler.setLayoutManager(new LinearLayoutManager(this));
+        mBinding.activityMainRecycler.setAdapter(mAdapter);
     }
 
     @Override
     protected void initData() {
-        mPresenter.init();
-        mPresenter.initHappy();
+
     }
 
     @Override
@@ -36,6 +41,12 @@ public class MainActivity extends IMVPActivity<ActivityMainBinding, MainContract
 
     @Override
     public void happy(String happy) {
-        LogUtils.d(TAG, "happy##"+happy);
+        LogUtils.d(TAG, "happy##" + happy);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mAdapter = null;
     }
 }
